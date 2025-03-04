@@ -13,10 +13,10 @@ type Logger interface {
 
 const (
 	ProfileCPU           ProfileType = "cpu"
-	ProfileInuseObjects  ProfileType = "inuse_objects"
-	ProfileAllocObjects  ProfileType = "alloc_objects"
-	ProfileInuseSpace    ProfileType = "inuse_space"
-	ProfileAllocSpace    ProfileType = "alloc_space"
+	ProfileInuseObjects  ProfileType = "real_inuse_objects"
+	ProfileAllocObjects  ProfileType = "inuse_objects"
+	ProfileInuseSpace    ProfileType = "real_inuse_space"
+	ProfileAllocSpace    ProfileType = "inuse_space"
 	ProfileGoroutines    ProfileType = "goroutines"
 	ProfileMutexCount    ProfileType = "mutex_count"
 	ProfileMutexDuration ProfileType = "mutex_duration"
