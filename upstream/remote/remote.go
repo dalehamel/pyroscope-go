@@ -9,6 +9,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/url"
+	"os"
 	"path"
 	"runtime/debug"
 	"strconv"
@@ -39,6 +40,7 @@ type Remote struct {
 	wg   sync.WaitGroup
 
 	flushWG sync.WaitGroup
+	id int
 }
 
 type HTTPClient interface {
@@ -146,7 +148,16 @@ func (r *Remote) uploadProfile(j *upstream.UploadJob) error {
 
 	body := &bytes.Buffer{}
 
-	writer := multipart.NewWriter(body)
+	multiPartWriter := multipart.NewWriter(body)
+
+	r.id += 1
+	localFile, err := os.Create(fmt.Sprintf("profile_%d.pprof", r.id))
+	if err != nil {
+		return err
+	}
+	defer localFile.Close()
+
+	writer := io.MultiWriter(multiPartWriter, localFile) 
 	fw, err := writer.CreateFormFile("profile", "profile.pprof")
 	if err != nil {
 		return err
