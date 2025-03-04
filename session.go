@@ -141,6 +141,7 @@ func mergeTagsWithAppName(appName string, sid sessionID, tags map[string]string)
 		k.Add(tagKey, tagValue)
 	}
 	k.Add(sessionIDLabelName, sid.String())
+	k.Add("__delta__", "false")
 	return k.Normalized(), nil
 }
 
