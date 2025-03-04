@@ -181,6 +181,7 @@ func (r *Remote) uploadProfile(j *upstream.UploadJob) error {
 	q.Set("sampleRate", strconv.Itoa(int(j.SampleRate)))
 	q.Set("units", j.Units)
 	q.Set("aggregationType", j.AggregationType)
+	q.Set("__delta__", "false")
 
 	u.Path = path.Join(u.Path, "ingest")
 	u.RawQuery = q.Encode()
