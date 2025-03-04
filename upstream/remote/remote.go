@@ -148,7 +148,7 @@ func (r *Remote) uploadProfile(j *upstream.UploadJob) error {
 
 	body := &bytes.Buffer{}
 
-	multiPartWriter := multipart.NewWriter(body)
+	writer := multipart.NewWriter(body)
 
 	r.id += 1
 	localFile, err := os.Create(fmt.Sprintf("profile_%d.pprof", r.id))
@@ -157,12 +157,12 @@ func (r *Remote) uploadProfile(j *upstream.UploadJob) error {
 	}
 	defer localFile.Close()
 
-	writer := io.MultiWriter(multiPartWriter, localFile) 
 	fw, err := writer.CreateFormFile("profile", "profile.pprof")
 	if err != nil {
 		return err
 	}
-	fw.Write(j.Profile)
+	profWriter := io.MultiWriter(fw, localFile) 
+	profWriter.Write(j.Profile)
 	if j.PrevProfile != nil {
 		fw, err = writer.CreateFormFile("prev_profile", "profile.pprof")
 		if err != nil {
